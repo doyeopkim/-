@@ -1,5 +1,6 @@
 pip install opencv-python
 pip install "numpy<1.17"
 pip install tensorflow==1.8.0
+pip install tensorflow-gpu==1.8.0 // nvidia 그래픽카드
 pip install pyqt5
 pip install matplotlib
