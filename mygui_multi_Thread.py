@@ -13,7 +13,7 @@ import tensorflow as tf
 
 from queue import Queue
 from threading import Thread
-
+from multiprocessing import Process, Queue
 from object_detection.utils import label_map_util as lmu
 from object_detection.utils import visualization_utils as vis_util
 from object_detection.utils import ops as utils_ops
@@ -28,6 +28,7 @@ from PyQt5.Qt import *
 
 
 class Ui_Dialog(QWidget, object):
+    changePixmap = pyqtSignal(QImage)
 
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -134,18 +135,23 @@ class Ui_Dialog(QWidget, object):
     ##end UI set
 
     def Cam_button_clicked(self):
-        th = Thread(self)
-        th.changePixmap.connect(self.setImage)
-        th2 = Thread2(self)
-        th.start()
+        #th1 = Thread(self)
+        #th1.changePixmap.connect(self.setImage)
+        #Thread.changePixmap.connect(self.setImage)
+        #th2 = Thread2(self)
+
+        #th1 = Process(target=Thread.run(self))
+        th1 = Process(target=Thread.run(self))
+        th2 = Process(target=Thread2.run(self))
+        th1.start()
         th2.start()
 
         print('씨불탱1')
 
-    def setImage(self, image):
-        self.label_4.setPixmap(QtGui.QPixmap.fromImage(image))
-
     # end def Cam_button
+
+    def setImage(self, image):
+        ui.label_4.setPixmap(QtGui.QPixmap.fromImage(image))
 
     def VIdeo_button_clicked(self):
         print('씨불탱2')
@@ -163,9 +169,14 @@ class Ui_Dialog(QWidget, object):
 
 
 class Thread(QThread):
-    changePixmap = pyqtSignal(QImage)
+    #changePixmap = pyqtSignal(QImage)
+
+    def setImage(self, image):
+        ui.label_4.setPixmap(QtGui.QPixmap.fromImage(image))
 
     def run(self):
+        self.changePixmap.connect(self.setImage)
+
         prevtime = 0
 
         while True:
@@ -194,6 +205,7 @@ class Thread(QThread):
 
             if key == ord("q"):
                 break
+
 
 
 
@@ -310,7 +322,6 @@ class Thread2(QThread):
 
         sleep(30)
 
-
 if __name__ == "__main__":
     import sys
 
@@ -325,11 +336,11 @@ if __name__ == "__main__":
 
     # capture = cv2.VideoCapture(0)
     capture = cv2.VideoCapture("20190916_165145.mp4")  # 165145 162900
+
     sys.exit(app.exec_())
 
 '''
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -337,7 +348,6 @@ class Ui_Dialog(object):
         Dialog.setStatusTip("")
         Dialog.setSizeGripEnabled(False)
         Dialog.setModal(False)
-
         self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setGeometry(QtCore.QRect(20, 100, 401, 501))
         self.label_4.setStyleSheet("background-color: rgb(236, 187, 255);")
@@ -353,7 +363,6 @@ class Ui_Dialog(object):
         self.textBrowser.setGeometry(QtCore.QRect(0, 10, 411, 481))
         self.textBrowser.setFrameShadow(QtWidgets.QFrame.Raised)
         self.textBrowser.setObjectName("textBrowser") #줄단위 결과창
-
         #버튼 아이콘 생성자
         self.Cam_button = QtWidgets.QPushButton(Dialog)
         self.Cam_button.setGeometry(QtCore.QRect(20, 10, 71, 61))
@@ -364,7 +373,6 @@ class Ui_Dialog(object):
         self.Cam_button.setIcon(icon)
         self.Cam_button.setIconSize(QtCore.QSize(50, 50))
         self.Cam_button.setObjectName("Cam_button")
-
         self.VIdeo_button = QtWidgets.QPushButton(Dialog)
         self.VIdeo_button.setGeometry(QtCore.QRect(100, 10, 71, 61))
         self.VIdeo_button.setStyleSheet("background-color: rgb(240, 240, 240);")
@@ -374,7 +382,6 @@ class Ui_Dialog(object):
         self.VIdeo_button.setIcon(icon1)
         self.VIdeo_button.setIconSize(QtCore.QSize(50, 50))
         self.VIdeo_button.setObjectName("VIdeo_button")
-
         self.Tf_button = QtWidgets.QPushButton(Dialog)
         self.Tf_button.setGeometry(QtCore.QRect(180, 10, 71, 61))
         self.Tf_button.setStyleSheet("background-color: rgb(240, 240, 240);")
@@ -384,7 +391,6 @@ class Ui_Dialog(object):
         self.Tf_button.setIcon(icon2)
         self.Tf_button.setIconSize(QtCore.QSize(50, 50))
         self.Tf_button.setObjectName("Tf_button")
-
         self.Res_button = QtWidgets.QPushButton(Dialog)
         self.Res_button.setGeometry(QtCore.QRect(260, 10, 71, 61))
         self.Res_button.setStyleSheet("background-color: rgb(240, 240, 240);")
@@ -394,7 +400,6 @@ class Ui_Dialog(object):
         self.Res_button.setIcon(icon3)
         self.Res_button.setIconSize(QtCore.QSize(50, 50))
         self.Res_button.setObjectName("Res_button")
-
         #라벨생성자
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(40, 80, 41, 16))
@@ -408,10 +413,8 @@ class Ui_Dialog(object):
         self.label_5 = QtWidgets.QLabel(Dialog)
         self.label_5.setGeometry(QtCore.QRect(280, 80, 41, 16))
         self.label_5.setObjectName("label_5")
-
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "오일쇼크"))
