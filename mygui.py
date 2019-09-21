@@ -180,10 +180,6 @@ class Ui_Dialog(QWidget, object):
     def setImage(self, image):
         ui.Video_lb.setPixmap(QtGui.QPixmap.fromImage(image))
 
-    def VIdeo_button_clicked(self):
-
-        print('씨불탱2')
-
     # end def Video_button
 
     def Cancel_button_clicked(self):
