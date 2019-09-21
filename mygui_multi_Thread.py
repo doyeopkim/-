@@ -28,7 +28,6 @@ from PyQt5.Qt import *
 
 
 class Ui_Dialog(QWidget, object):
-    changePixmap = pyqtSignal(QImage)
 
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -135,14 +134,10 @@ class Ui_Dialog(QWidget, object):
     ##end UI set
 
     def Cam_button_clicked(self):
-        #th1 = Thread(self)
-        #th1.changePixmap.connect(self.setImage)
-        #Thread.changePixmap.connect(self.setImage)
-        #th2 = Thread2(self)
+        th1 = Thread(self)
+        th1.changePixmap.connect(self.setImage)
+        th2 = Thread2(self)
 
-        #th1 = Process(target=Thread.run(self))
-        th1 = Process(target=Thread.run(self))
-        th2 = Process(target=Thread2.run(self))
         th1.start()
         th2.start()
 
@@ -154,6 +149,7 @@ class Ui_Dialog(QWidget, object):
         ui.label_4.setPixmap(QtGui.QPixmap.fromImage(image))
 
     def VIdeo_button_clicked(self):
+
         print('씨불탱2')
 
     # end def Video_button
@@ -169,13 +165,10 @@ class Ui_Dialog(QWidget, object):
 
 
 class Thread(QThread):
-    #changePixmap = pyqtSignal(QImage)
-
-    def setImage(self, image):
-        ui.label_4.setPixmap(QtGui.QPixmap.fromImage(image))
+    changePixmap = pyqtSignal(QImage)
 
     def run(self):
-        self.changePixmap.connect(self.setImage)
+        sleep(6)
 
         prevtime = 0
 
@@ -205,7 +198,6 @@ class Thread(QThread):
 
             if key == ord("q"):
                 break
-
 
 
 
@@ -305,6 +297,7 @@ class Thread2(QThread):
 
                     Result = frame[ymin:ymax, xmin:xmax]
                     cv2.imwrite('car.jpg', Result)
+                    print('b')
                     try:
                         result_chars = NP.number_recognition('car.jpg')
                         ui.label_6.setText(result_chars)
@@ -319,8 +312,6 @@ class Thread2(QThread):
 
             if key == ord("q"):
                 break
-
-        sleep(30)
 
 if __name__ == "__main__":
     import sys
