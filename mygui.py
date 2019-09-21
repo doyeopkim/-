@@ -48,41 +48,42 @@ class Ui_Dialog(QWidget, object):
         self.textBrowser.setObjectName("textBrowser")  # 줄단위 결과창
 
         '''버튼 아이콘 생성자'''
-        self.Cam_button = QtWidgets.QPushButton(Dialog)
-        self.Cam_button.setGeometry(QtCore.QRect(20, 10, 71, 61))
-        self.Cam_button.setStyleSheet("background-color: rgb(240, 240, 240);")
-        self.Cam_button.setText("")
+        # 시작 버튼
+        self.Rec_button = QtWidgets.QPushButton(Dialog)
+        self.Rec_button.setGeometry(QtCore.QRect(20, 10, 71, 61))
+        self.Rec_button.setStyleSheet("background-color: rgb(240, 240, 240);")
+        self.Rec_button.setText("시작")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/camera.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Cam_button.setIcon(icon)
-        self.Cam_button.setIconSize(QtCore.QSize(50, 50))
-        self.Cam_button.setObjectName("Cam_button")
-        self.Cam_button.clicked.connect(self.Cam_button_clicked)  # 카메라 버튼이벤트 생성
+        self.Rec_button.setIcon(icon)
+        self.Rec_button.setIconSize(QtCore.QSize(50, 50))
+        self.Rec_button.setObjectName("Rec_button")
+        self.Rec_button.clicked.connect(self.Rec_button_clicked)  # 카메라 버튼이벤트 생성
 
-        self.Tf_button = QtWidgets.QPushButton(Dialog)
-        self.Tf_button = QtWidgets.QPushButton(self.frame)
-        self.Tf_button.setGeometry(QtCore.QRect(320, 385, 150, 75))
-        self.Tf_button.setStyleSheet("background-color: rgb(255, 051, 051);" 'color : rgb(255, 255, 255); font-size: 18pt; font-family: 메이플스토리;') # 255 102 051
-        self.Tf_button.setText("취 소")
+
+        # 취소 버튼
+        self.Cancel_button = QtWidgets.QPushButton(Dialog)
+        self.Cancel_button.setGeometry(QtCore.QRect(860, 565, 150, 75))
+        self.Cancel_button.setStyleSheet("background-color: rgb(255, 051, 051);" 'color : rgb(255, 255, 255); font-size: 18pt; font-family: 메이플스토리;') # 255 102 051
+        self.Cancel_button.setText("취 소")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/tensorflow.png"), QtGui.QIcon.Normal,
-                        QtGui.QIcon.Off)
-        self.Tf_button.setIcon(icon2)
-        self.Tf_button.setIconSize(QtCore.QSize(50, 50))
-        self.Tf_button.setObjectName("Tf_button")
-        self.Tf_button.clicked.connect(self.Tf_button_clicked)  # 텐서플로 버튼이벤트 생성
+        icon2.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/tensorflow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Cancel_button.setIcon(icon2)
+        self.Cancel_button.setIconSize(QtCore.QSize(50, 50))
+        self.Cancel_button.setObjectName("Cancel_button")
+        self.Cancel_button.clicked.connect(self.Cancel_button_clicked)  # 텐서플로 버튼이벤트 생성
 
-        self.Res_button = QtWidgets.QPushButton(Dialog)
-        self.Res_button = QtWidgets.QPushButton(self.frame)
-        self.Res_button.setGeometry(QtCore.QRect(510, 385, 150, 75))
-        self.Res_button.setStyleSheet("background-color: rgb(10, 204, 102);" 'color : rgb(255, 255, 255); font-size: 18pt; font-family: 메이플스토리;')
-        self.Res_button.setText("확 인")
+        # 확인 버튼
+        self.Confirm_button = QtWidgets.QPushButton(Dialog)
+        self.Confirm_button.setGeometry(QtCore.QRect(1050, 565, 150, 75))
+        self.Confirm_button.setStyleSheet("background-color: rgb(10, 204, 102);" 'color : rgb(255, 255, 255); font-size: 18pt; font-family: 메이플스토리;')
+        self.Confirm_button.setText("확 인")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/result.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Res_button.setIcon(icon3)
-        self.Res_button.setIconSize(QtCore.QSize(50, 50))
-        self.Res_button.setObjectName("Res_button")
-        self.Res_button.clicked.connect(self.Res_button_clicked) #결과창 버튼이벤트 생성
+        self.Confirm_button.setIcon(icon3)
+        self.Confirm_button.setIconSize(QtCore.QSize(50, 50))
+        self.Confirm_button.setObjectName("Confirm_button")
+        self.Confirm_button.clicked.connect(self.Confirm_button_clicked) #결과창 버튼이벤트 생성
 
         '''라벨생성자'''
         self.Video_lb = QtWidgets.QLabel(Dialog)
@@ -164,7 +165,7 @@ class Ui_Dialog(QWidget, object):
 
     ##end UI set
 
-    def Cam_button_clicked(self):
+    def Rec_button_clicked(self):
         th1 = Thread(self)
         th1.changePixmap.connect(self.setImage)
         th2 = Thread2(self)
@@ -172,7 +173,7 @@ class Ui_Dialog(QWidget, object):
         th1.start()
         th2.start()
 
-        print('씨불탱1')
+        print('영상 재생')
 
     # end def Cam_button
 
@@ -185,12 +186,12 @@ class Ui_Dialog(QWidget, object):
 
     # end def Video_button
 
-    def Tf_button_clicked(self):
+    def Cancel_button_clicked(self):
         print('취소')
 
     # end def Tf_button
 
-    def Res_button_clicked(self):
+    def Confirm_button_clicked(self):
         print('확인')
     # end def Res_button
 
