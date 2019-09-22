@@ -33,79 +33,96 @@ class Ui_Dialog(QWidget, object):
         Dialog.setObjectName("Dialog")
         Dialog.resize(1280, 720)
         Dialog.setStatusTip("")
+        Dialog.setStyleSheet("background-color: rgb(255, 255, 255);")
+        Dialog.setWindowIcon(QtGui.QIcon('../NumPlate/image/123.jpg')) # WindowIcon 설정
         Dialog.setSizeGripEnabled(False)
         Dialog.setModal(False)
 
         self.frame = QtWidgets.QFrame(Dialog)
-        self.frame.setGeometry(QtCore.QRect(540, 180, 700, 500))
+        self.frame.setGeometry(QtCore.QRect(550, 190, 700, 500))
         self.frame.setStyleSheet("background-color: rgb(255, 255, 255);")  # 204 255 255 // 102 204 255
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")  # 결과화면
+
         self.textBrowser = QtWidgets.QTextBrowser(self.frame)
         self.textBrowser.setGeometry(QtCore.QRect(0, 0, 700, 500))
         self.textBrowser.setFrameShadow(QtWidgets.QFrame.Raised)
         self.textBrowser.setObjectName("textBrowser")  # 줄단위 결과창
 
-        '''버튼 아이콘 생성자'''
+        '''버튼&아이콘 생성자'''
         # 시작 버튼
         self.Rec_button = QtWidgets.QPushButton(Dialog)
-        self.Rec_button.setGeometry(QtCore.QRect(20, 10, 71, 61))
+        self.Rec_button.setGeometry(QtCore.QRect(1150, 30, 100, 100))
         self.Rec_button.setStyleSheet("background-color: rgb(240, 240, 240);")
-        self.Rec_button.setText("시작")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/camera.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../Numplate/image/play-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Rec_button.setIcon(icon)
         self.Rec_button.setIconSize(QtCore.QSize(50, 50))
         self.Rec_button.setObjectName("Rec_button")
         self.Rec_button.clicked.connect(self.Rec_button_clicked)  # 카메라 버튼이벤트 생성
 
+        # 등록 버튼
+        self.Register_button = QtWidgets.QPushButton(Dialog)
+        self.Register_button.setGeometry(QtCore.QRect(650, 575, 140, 75))
+        self.Register_button.setStyleSheet(
+            "background-color: rgb(000, 102, 255);" 'color : rgb(255, 255, 255); font-size: 18pt; font-family: 메이플스토리;')  # 255 102 051
+        self.Register_button.setText("등록하기")
+        self.Register_button.setObjectName("Register_button")
+        self.Register_button.clicked.connect(self.Register_button_clicked)  # 취소 버튼이벤트 생성
 
         # 취소 버튼
         self.Cancel_button = QtWidgets.QPushButton(Dialog)
-        self.Cancel_button.setGeometry(QtCore.QRect(860, 565, 150, 75))
+        self.Cancel_button.setGeometry(QtCore.QRect(830, 575, 140, 75))
         self.Cancel_button.setStyleSheet("background-color: rgb(255, 051, 051);" 'color : rgb(255, 255, 255); font-size: 18pt; font-family: 메이플스토리;') # 255 102 051
         self.Cancel_button.setText("취 소")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/tensorflow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Cancel_button.setIcon(icon2)
-        self.Cancel_button.setIconSize(QtCore.QSize(50, 50))
         self.Cancel_button.setObjectName("Cancel_button")
-        self.Cancel_button.clicked.connect(self.Cancel_button_clicked)  # 텐서플로 버튼이벤트 생성
+        self.Cancel_button.clicked.connect(self.Cancel_button_clicked)  # 취소 버튼이벤트 생성
 
         # 확인 버튼
         self.Confirm_button = QtWidgets.QPushButton(Dialog)
-        self.Confirm_button.setGeometry(QtCore.QRect(1050, 565, 150, 75))
+        self.Confirm_button.setGeometry(QtCore.QRect(1010, 575, 140, 75))
         self.Confirm_button.setStyleSheet("background-color: rgb(10, 204, 102);" 'color : rgb(255, 255, 255); font-size: 18pt; font-family: 메이플스토리;')
         self.Confirm_button.setText("확 인")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/result.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Confirm_button.setIcon(icon3)
-        self.Confirm_button.setIconSize(QtCore.QSize(50, 50))
         self.Confirm_button.setObjectName("Confirm_button")
-        self.Confirm_button.clicked.connect(self.Confirm_button_clicked) #결과창 버튼이벤트 생성
+        self.Confirm_button.clicked.connect(self.Confirm_button_clicked) # 확인 버튼이벤트 생성
 
         '''라벨생성자'''
+        # 로고 이미지 라벨
+        self.Logo_lb = QtWidgets.QLabel(Dialog)
+        self.Logo_lb.setGeometry(QtCore.QRect(30, 30, 140, 140))
+        pixmap = QPixmap('../NumPlate/image/logo.png')
+        #pixmap = pixmap.scaled(140, 140)
+        self.Logo_lb.setPixmap(pixmap)
+        self.Logo_lb.setObjectName("Logo_lb")
+
+        # 디자인용 선 라벨
+        self.Line_lb = QtWidgets.QLabel(Dialog)
+        self.Line_lb.setGeometry(QtCore.QRect(170, 160, 1080, 4))
+        self.Line_lb.setStyleSheet("background-color: rgb(000, 000, 000);")
+        self.Line_lb.setObjectName("Line_lb")
+
+        # 영상이 나올 라벨
         self.Video_lb = QtWidgets.QLabel(Dialog)
-        self.Video_lb.setGeometry(QtCore.QRect(40, 180, 460, 500))
+        self.Video_lb.setGeometry(QtCore.QRect(30, 190, 480, 500))
         self.Video_lb.setStyleSheet(
             "background-color: rgb(153, 153, 153);" 'font-size: 24pt; font-family: 메이플스토리;')  # 폰트&사이즈
         self.Video_lb.setText("여기에 카메라 \n영상이 재생됩니다.")
         self.Video_lb.setAlignment(QtCore.Qt.AlignCenter)  # 중앙 정렬
-        self.Video_lb.setObjectName("Video_lb")  # 영상이 나올 화면
+        self.Video_lb.setObjectName("Video_lb")
 
         # 번호판 라벨
         self.Num_Plate_lb = QtWidgets.QLabel(Dialog)
         self.Num_Plate_lb = QtWidgets.QLabel(self.frame)
-        self.Num_Plate_lb.setGeometry(QtCore.QRect(175, 50, 350, 60)) # 225 40 250 50
-        self.Num_Plate_lb.setStyleSheet('font-size: 42pt; font-family: 메이플스토리;')
+        self.Num_Plate_lb.setGeometry(QtCore.QRect(195, 40, 310, 60)) # 225 40 250 50
+        self.Num_Plate_lb.setStyleSheet('border: 2px solid black; font-size: 42pt; font-family: 메이플스토리;')
         self.Num_Plate_lb.setAlignment(QtCore.Qt.AlignCenter)
-        self.Num_Plate_lb.setObjectName("label_6")
+        self.Num_Plate_lb.setObjectName("Num_Plate_lb")
 
         # (고객님의 유종은)Text 라벨
         self.cus_oil_lb = QtWidgets.QLabel(Dialog)
         self.cus_oil_lb = QtWidgets.QLabel(self.frame)
-        self.cus_oil_lb.setGeometry(QtCore.QRect(175, 120, 350, 60))
+        self.cus_oil_lb.setGeometry(QtCore.QRect(100, 120, 500, 60))
         self.cus_oil_lb.setStyleSheet('font-size: 42pt; font-family: 메이플스토리;')
         self.cus_oil_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.cus_oil_lb.setObjectName("cus_oil_lb")
@@ -113,7 +130,7 @@ class Ui_Dialog(QWidget, object):
         # 유종 정보 라벨
         self.oil_kind_lb = QtWidgets.QLabel(Dialog)
         self.oil_kind_lb = QtWidgets.QLabel(self.frame)
-        self.oil_kind_lb.setGeometry(QtCore.QRect(175, 190, 350, 60))
+        self.oil_kind_lb.setGeometry(QtCore.QRect(95, 200, 350, 60))
         self.oil_kind_lb.setStyleSheet('color : rgb(255, 000, 000); font-size: 42pt; font-family: 메이플스토리;')
         self.oil_kind_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.oil_kind_lb.setObjectName("oil_kind_lb")
@@ -121,7 +138,7 @@ class Ui_Dialog(QWidget, object):
         # (입니다)Text 라벨
         self.ex_last_lb = QtWidgets.QLabel(Dialog)
         self.ex_last_lb = QtWidgets.QLabel(self.frame)
-        self.ex_last_lb.setGeometry(QtCore.QRect(175, 260, 350, 60))
+        self.ex_last_lb.setGeometry(QtCore.QRect(445, 200, 160, 60))
         self.ex_last_lb.setStyleSheet('font-size: 42pt; font-family: 메이플스토리;')
         self.ex_last_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.ex_last_lb.setObjectName("ex_last_lb")
@@ -129,7 +146,7 @@ class Ui_Dialog(QWidget, object):
         # (유종 정보가 맞다면 (확인)을 눌러주세요.)Text 라벨
         self.plz_continue_lb = QtWidgets.QLabel(Dialog)
         self.plz_continue_lb = QtWidgets.QLabel(self.frame)
-        self.plz_continue_lb.setGeometry(QtCore.QRect(175, 330, 360, 30))
+        self.plz_continue_lb.setGeometry(QtCore.QRect(167, 290, 365, 30))
         self.plz_continue_lb.setStyleSheet('font-size: 18pt; font-family: 메이플스토리;')
         self.plz_continue_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.plz_continue_lb.setObjectName("plz_continue_lb")
@@ -137,16 +154,40 @@ class Ui_Dialog(QWidget, object):
         # (확인)Text 라벨
         self.check_lb = QtWidgets.QLabel(Dialog)
         self.check_lb = QtWidgets.QLabel(self.frame)
-        self.check_lb.setGeometry(QtCore.QRect(360, 330, 40, 30))
+        self.check_lb.setGeometry(QtCore.QRect(350, 290, 50, 30))
         self.check_lb.setStyleSheet('background-color: rgb(10, 204, 102); color : rgb(255, 255, 255); font-size: 18pt; font-family: 메이플스토리;')
         self.check_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.check_lb.setObjectName("plz_continue_lb")
 
+        # (유종 정보가 없다면 (등록하기)를 눌러주세요.)Text 라벨
+        self.plz_register_lb = QtWidgets.QLabel(Dialog)
+        self.plz_register_lb = QtWidgets.QLabel(self.frame)
+        self.plz_register_lb.setGeometry(QtCore.QRect(150, 330, 400, 30))
+        self.plz_register_lb.setStyleSheet('font-size: 18pt; font-family: 메이플스토리;')
+        self.plz_register_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.plz_register_lb.setObjectName("plz_register_lb")
+
+        # (등록하기)Text 라벨
+        self.register_lb = QtWidgets.QLabel(Dialog)
+        self.register_lb = QtWidgets.QLabel(self.frame)
+        self.register_lb.setGeometry(QtCore.QRect(335, 330, 80, 30))
+        self.register_lb.setStyleSheet(
+            'background-color: rgb(000, 102, 255); color : rgb(255, 255, 255); font-size: 18pt; font-family: 메이플스토리;')
+        self.register_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.register_lb.setObjectName("register_lb")
+
         # 프레임 라벨
         self.fps_label = QtWidgets.QLabel(Dialog)
-        self.fps_label.setGeometry(QtCore.QRect(40, 160, 81, 16))
+        self.fps_label.setGeometry(QtCore.QRect(30, 695, 81, 16))
         self.fps_label.setStyleSheet('font-size: 10pt; font-family: 메이플스토리;')
         self.fps_label.setObjectName("fps_label")
+
+        # 제작자 라벨
+        self.Maker_lb = QtWidgets.QLabel(Dialog)
+        self.Maker_lb.setGeometry(QtCore.QRect(900, 695, 350, 16))
+        self.Maker_lb.setStyleSheet('font-size: 10pt; font-family: 메이플스토리;')
+        self.Maker_lb.setAlignment(QtCore.Qt.AlignRight)
+        self.Maker_lb.setObjectName("Maker_lb")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -156,16 +197,21 @@ class Ui_Dialog(QWidget, object):
         Dialog.setWindowTitle(_translate("Dialog", "Oil Shock - The Oil Kind Determination System"))
 
         self.Num_Plate_lb.setText(_translate("Dialog", "인식한 번호판"))
-        self.cus_oil_lb.setText(_translate("Dialog", "고객님의 유종은"))
-        self.oil_kind_lb.setText(_translate("Dialog", "고급 씨발유"))
+        self.cus_oil_lb.setText(_translate("Dialog", "고객님 차량의 유종은"))
+        self.oil_kind_lb.setText(_translate("Dialog", "휘발유(가솔린)"))
         self.ex_last_lb.setText(_translate("Dialog", "입니다."))
-        self.plz_continue_lb.setText(_translate("Dialog", "유종 정보가 맞다면        을 눌러주세요."))
-        self.check_lb.setText(_translate("Dialog", "확인"))
+        self.plz_continue_lb.setText(_translate("Dialog", "유종 정보가 맞다면          을 눌러주세요."))
+        self.check_lb.setText(_translate("Dialog", "확 인"))
+        self.plz_register_lb.setText(_translate("Dialog", "유종 정보가 없다면               를 눌러주세요."))
+        self.register_lb.setText(_translate("Dialog", "등록하기"))
         self.fps_label.setText(_translate("Dialog", "프레임"))
+        self.Maker_lb.setText(_translate("Dialog", "The Oil Kind Determination System  ⓟTeam OilShock"))
 
-    ##end UI set
+    def setImage(self, image): # 이미지를 라벨에 넣는 함수
+        ui.Video_lb.setPixmap(QtGui.QPixmap.fromImage(image))
 
-    def Rec_button_clicked(self):
+    # Event 함수
+    def Rec_button_clicked(self): # 시작 버튼 이벤트
         th1 = Thread(self)
         th1.changePixmap.connect(self.setImage)
         th2 = Thread2(self)
@@ -175,21 +221,14 @@ class Ui_Dialog(QWidget, object):
 
         print('영상 재생')
 
-    # end def Cam_button
+    def Register_button_clicked(self): # 등록 버튼 이벤트
+        print('등록')
 
-    def setImage(self, image):
-        ui.Video_lb.setPixmap(QtGui.QPixmap.fromImage(image))
-
-    # end def Video_button
-
-    def Cancel_button_clicked(self):
+    def Cancel_button_clicked(self): # 취소 버튼 이벤트
         print('취소')
 
-    # end def Tf_button
-
-    def Confirm_button_clicked(self):
+    def Confirm_button_clicked(self): # 확인 버튼 이벤트
         print('확인')
-    # end def Res_button
 
 
 class Thread(QThread):
@@ -325,7 +364,6 @@ class Thread2(QThread):
 
                     Result = frame[ymin:ymax, xmin:xmax]
                     cv2.imwrite('car.jpg', Result)
-                    print('b')
                     try:
                         result_chars = NP.number_recognition('car.jpg')
                         ui.Num_Plate_lb.setText(result_chars)
@@ -357,89 +395,3 @@ if __name__ == "__main__":
     capture = cv2.VideoCapture("20190916_165145.mp4")  # 165145 162900
 
     sys.exit(app.exec_())
-
-'''
-from PyQt5 import QtCore, QtGui, QtWidgets
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(874, 625)
-        Dialog.setStatusTip("")
-        Dialog.setSizeGripEnabled(False)
-        Dialog.setModal(False)
-        self.label_4 = QtWidgets.QLabel(Dialog)
-        self.label_4.setGeometry(QtCore.QRect(20, 100, 401, 501))
-        self.label_4.setStyleSheet("background-color: rgb(236, 187, 255);")
-        self.label_4.setText("")
-        self.label_4.setObjectName("label_4") #영상이 나올 화면
-        self.frame = QtWidgets.QFrame(Dialog)
-        self.frame.setGeometry(QtCore.QRect(440, 100, 411, 501))
-        self.frame.setStyleSheet("background-color: rgb(170, 255, 255);")
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setObjectName("frame") #결과화면
-        self.textBrowser = QtWidgets.QTextBrowser(self.frame)
-        self.textBrowser.setGeometry(QtCore.QRect(0, 10, 411, 481))
-        self.textBrowser.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.textBrowser.setObjectName("textBrowser") #줄단위 결과창
-        #버튼 아이콘 생성자
-        self.Cam_button = QtWidgets.QPushButton(Dialog)
-        self.Cam_button.setGeometry(QtCore.QRect(20, 10, 71, 61))
-        self.Cam_button.setStyleSheet("background-color: rgb(240, 240, 240);")
-        self.Cam_button.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/camera.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Cam_button.setIcon(icon)
-        self.Cam_button.setIconSize(QtCore.QSize(50, 50))
-        self.Cam_button.setObjectName("Cam_button")
-        self.VIdeo_button = QtWidgets.QPushButton(Dialog)
-        self.VIdeo_button.setGeometry(QtCore.QRect(100, 10, 71, 61))
-        self.VIdeo_button.setStyleSheet("background-color: rgb(240, 240, 240);")
-        self.VIdeo_button.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/play-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.VIdeo_button.setIcon(icon1)
-        self.VIdeo_button.setIconSize(QtCore.QSize(50, 50))
-        self.VIdeo_button.setObjectName("VIdeo_button")
-        self.Tf_button = QtWidgets.QPushButton(Dialog)
-        self.Tf_button.setGeometry(QtCore.QRect(180, 10, 71, 61))
-        self.Tf_button.setStyleSheet("background-color: rgb(240, 240, 240);")
-        self.Tf_button.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/tensorflow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Tf_button.setIcon(icon2)
-        self.Tf_button.setIconSize(QtCore.QSize(50, 50))
-        self.Tf_button.setObjectName("Tf_button")
-        self.Res_button = QtWidgets.QPushButton(Dialog)
-        self.Res_button.setGeometry(QtCore.QRect(260, 10, 71, 61))
-        self.Res_button.setStyleSheet("background-color: rgb(240, 240, 240);")
-        self.Res_button.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("../My_detection/mygui/image/result.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Res_button.setIcon(icon3)
-        self.Res_button.setIconSize(QtCore.QSize(50, 50))
-        self.Res_button.setObjectName("Res_button")
-        #라벨생성자
-        self.label = QtWidgets.QLabel(Dialog)
-        self.label.setGeometry(QtCore.QRect(40, 80, 41, 16))
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(Dialog)
-        self.label_2.setGeometry(QtCore.QRect(120, 80, 41, 16))
-        self.label_2.setObjectName("label_2")
-        self.label_3 = QtWidgets.QLabel(Dialog)
-        self.label_3.setGeometry(QtCore.QRect(190, 80, 51, 16))
-        self.label_3.setObjectName("label_3")
-        self.label_5 = QtWidgets.QLabel(Dialog)
-        self.label_5.setGeometry(QtCore.QRect(280, 80, 41, 16))
-        self.label_5.setObjectName("label_5")
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
-    def retranslateUi(self, Dialog):
-        _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "오일쇼크"))
-        self.label.setText(_translate("Dialog", "카메라"))
-        self.label_2.setText(_translate("Dialog", "동영상"))
-        self.label_3.setText(_translate("Dialog", "텐서플로"))
-        self.label_5.setText(_translate("Dialog", "결과창"))
-##end UI set
-'''
