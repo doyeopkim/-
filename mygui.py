@@ -40,7 +40,7 @@ class Ui_Dialog(QWidget, object):
         Dialog.setStatusTip("")
         Dialog.setStyleSheet("background-color: rgb(255, 255, 255);")
         Dialog.setWindowIcon(QtGui.QIcon('../NumPlate/image/123.jpg')) # WindowIcon 설정
-        Dialog.setWindowTitle('Oil Shock - Fuel Classifier System')
+        Dialog.setWindowTitle('Oil Shock - The Fuel Classifier System')
         Dialog.setSizeGripEnabled(False)
         Dialog.setModal(False)
 
@@ -94,10 +94,10 @@ class Ui_Dialog(QWidget, object):
         '''라벨생성자'''
         # 로고 이미지 라벨
         self.Logo_lb = QtWidgets.QLabel(Dialog)
-        self.Logo_lb.setGeometry(QtCore.QRect(50, 30, 140, 140))
+        self.Logo_lb.setGeometry(QtCore.QRect(50, 30, 130, 132))
         self.Logo_lb.setStyleSheet("background-color: rgb()")
-        pixmap = QPixmap('../NumPlate/image/logo.png')
-        #pixmap = pixmap.scaled(140, 140) # 사이즈 재설정
+        pixmap = QPixmap('../NumPlate/image/유각원농도100.png')
+        pixmap = pixmap.scaled(130, 132) # 사이즈 재설정
         self.Logo_lb.setPixmap(pixmap)
 
         # 디자인용 선 라벨
@@ -108,13 +108,13 @@ class Ui_Dialog(QWidget, object):
         # 영상이 나올 라벨
         self.Video_lb = QtWidgets.QLabel(Dialog)
         self.Video_lb.setGeometry(QtCore.QRect(50, 190, 580, 480))
-        self.Video_lb.setStyleSheet('border : 2px solid black; border-radius: 10px; background-color: rgb(204, 204, 204, 100); font-size: 30pt; font-family: 맑은 고딕;')  # 폰트&사이즈
+        self.Video_lb.setStyleSheet('border : 4px solid black; border-radius: 10px; background-color: rgb(204, 204, 204, 100); font-size: 30pt; font-family: 맑은 고딕;')  # 폰트&사이즈
         self.Video_lb.setText('여기에 카메라 \n영상이 재생됩니다.')
         self.Video_lb.setAlignment(QtCore.Qt.AlignCenter)  # 중앙 정렬
 
         # 번호판 이미지 라벨
         self.Plate_img_lb = QtWidgets.QLabel(Dialog)
-        self.Plate_img_lb.setGeometry(QtCore.QRect(840, 250, 200, 50))
+        self.Plate_img_lb.setGeometry(QtCore.QRect(810, 250, 260, 50))
         self.Plate_img_lb.setStyleSheet('background-color: rgb(000, 000, 000);')
         # pixmap = QPixmap('00.jpg')
         # pixmap = pixmap.scaled(140, 140)
@@ -122,8 +122,8 @@ class Ui_Dialog(QWidget, object):
 
         # 번호판 라벨
         self.Num_Plate_lb = QtWidgets.QLabel(Dialog)
-        self.Num_Plate_lb.setGeometry(QtCore.QRect(785, 320, 310, 60)) # 785 290 31 60
-        self.Num_Plate_lb.setStyleSheet('border: 2px solid black; background-color: rgb(); font-size: 30pt; font-family: 맑은 고딕;')
+        self.Num_Plate_lb.setGeometry(QtCore.QRect(785, 315, 310, 60)) # 785 290 31 60
+        self.Num_Plate_lb.setStyleSheet('background-color: rgb(); font-weight : bold; font-size: 36pt; font-family: 맑은 고딕;')
         self.Num_Plate_lb.setAlignment(QtCore.Qt.AlignCenter)
         #self.Num_Plate_lb.setText('인식한 번호판')
 
@@ -186,10 +186,10 @@ class Ui_Dialog(QWidget, object):
 
         # 제작자 라벨
         self.Maker_lb = QtWidgets.QLabel(Dialog)
-        self.Maker_lb.setGeometry(QtCore.QRect(910, 694, 350, 16))
+        self.Maker_lb.setGeometry(QtCore.QRect(990, 694, 274, 16))
         self.Maker_lb.setStyleSheet('background-color: rgb(); font-size: 10pt; font-family: 맑은 고딕;')
         self.Maker_lb.setAlignment(QtCore.Qt.AlignRight)
-        self.Maker_lb.setText('Fuel Classifier System  |  Team. Oil Shock')
+        self.Maker_lb.setText('The Fuel Classifier System  |  Team. Oil Shock')
 
     def setImage(self, image): # 이미지를 라벨에 넣는 함수
         ui.Video_lb.setPixmap(QtGui.QPixmap.fromImage(image))
@@ -348,7 +348,7 @@ class Thread2(QThread):
                         ui.Num_Plate_lb.setText(result_chars)
 
                         pixmap = QPixmap('00.jpg')
-                        pixmap = pixmap.scaled(200, 50)
+                        pixmap = pixmap.scaled(260, 50)
                         ui.Plate_img_lb.setPixmap(pixmap)
                         # print(NP.check())
 
