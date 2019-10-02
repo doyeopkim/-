@@ -227,9 +227,9 @@ class Ui_Dialog(QWidget, object):
         th2 = Thread2(self)
 
         th1.start()
+        print('스레드1시작')
         th2.start()
-
-        print('영상 재생')
+        print('스레드2시작')
 
     def Register_button_clicked(self): # 등록 버튼 이벤트
         print('등록')
@@ -245,11 +245,13 @@ class Thread(QThread):
 
     def run(self):
         sleep(12)
+        print('스레드1 슬립')
 
         prevtime = 0
 
         while True:
-            k = cv2.waitKey(15)
+            print('스레드1 읽음')
+            #k = cv2.waitKey(15)
             ret, frame = capture.read()
 
             # 프레임 표시
@@ -263,18 +265,23 @@ class Thread(QThread):
             # end 프레임
 
             if ret:
+                print('스레드 1 영상올라감')
                 # https://stackoverflow.com/a/55468544/6622587
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
                 convertToQtFormat = QtGui.QImage(rgbImage.data, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
                 p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+                print('스레드 1 영상 ui에 올리기 직전')
                 self.changePixmap.emit(p)
 
-            key = cv2.waitKey(1) & 0xFF
+            #key = cv2.waitKey(1) & 0xFF
 
-            if key == ord("q"):
-                break
+            #if key == ord("q"):
+            #    break
+            print('스레드1 와일슬립')
+            sleep(0)
+
 
 def Regi_ui():
     ui.Register_button.setVisible(True)
@@ -300,6 +307,7 @@ def Exis_ui():
 class Thread2(QThread):
 
     def run(self):
+        print('스레드2 런')
         time1 = time.time()
         MIN_ratio = 0.60
 
@@ -346,18 +354,20 @@ class Thread2(QThread):
         print("road Video time : %0.5f" % (time.time() - time1))
 
         while True:
+            print('스레드2 읽음')
             ret, frame = capture.read()
             frame_expanded = np.expand_dims(frame, axis=0)
+
             #height, width, channel = frame.shape
             if not ret:
                 print("나간다")
                 break
-            
+
             (boxes, scores, classes, nums) = sses.run(  # np.ndarray
                 [detection_boxes, detection_scores, detection_classes, num_detections],
                 feed_dict={image_tensor: frame_expanded}
             )  # end sses.run()
-            
+
             vis_util.visualize_boxes_and_labels_on_image_array(
                 frame,
                 np.squeeze(boxes),
@@ -368,11 +378,11 @@ class Thread2(QThread):
                 min_score_thresh = MIN_ratio,#최소 인식률
                 line_thickness = 2) #선두께
 
-
+            print('스레드2 돌아감')
             try:
                 pixmap = QPixmap('00.jpg')
                 pixmap = pixmap.scaled(260, 50)
-                
+
                 ui.Num_Plate_lb.setText(str(car_info[0]) )
                 ui.Plate_img_lb.setPixmap(pixmap)
 
@@ -417,14 +427,17 @@ class Thread2(QThread):
                     except:
                         print("응안돼")
             '''
+
             # print(objects)
-            
 
-            
-            key = cv2.waitKey(1) & 0xFF
 
-            if key == ord("q"):
-                break
+
+            #key = cv2.waitKey(1) & 0xFF
+
+            #if key == ord("q"):
+            #    break
+            print('스레드2  와일슬립')
+            sleep(0)
 
 if __name__ == "__main__":
     import sys
@@ -439,6 +452,6 @@ if __name__ == "__main__":
     Dialog.show()
 
     # capture = cv2.VideoCapture(0)
-    capture = cv2.VideoCapture("20190916_165145.mp4")  # 20190916_165145 162900
+    capture = cv2.VideoCapture("asdf.mp4")  # 20190916_165145 162900
 
     sys.exit(app.exec_())
