@@ -244,13 +244,13 @@ class Thread(QThread):
     changePixmap = pyqtSignal(QImage)
 
     def run(self):
-        print('스레드1 슬립')
-
         prevtime = 0
 
         while True:
-            print('스레드1 읽음')
             ret, frame = capture.read()
+            global re, fr
+            re = ret
+            fr = frame
 
             # 프레임 표시
             curtime = time.time()
@@ -263,21 +263,13 @@ class Thread(QThread):
             # end 프레임
 
             if ret:
-                print('스레드 1 영상올라감')
                 # https://stackoverflow.com/a/55468544/6622587
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
                 convertToQtFormat = QtGui.QImage(rgbImage.data, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
                 p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-                print('스레드 1 영상 ui에 올리기 직전')
                 self.changePixmap.emit(p)
-
-            # key = cv2.waitKey(1) & 0xFF
-
-            # if key == ord("q"):
-            #    break
-            print('스레드1 와일슬립')
             sleep(0)
 
 
@@ -306,7 +298,6 @@ def Exis_ui():
 class Thread2(QThread):
 
     def run(self):
-        print('스레드2 런')
         time1 = time.time()
         MIN_ratio = 0.60
 
@@ -353,8 +344,9 @@ class Thread2(QThread):
         print("road Video time : %0.5f" % (time.time() - time1))
 
         while True:
-            print('스레드2 읽음')
-            ret, frame = capture.read()
+            global re, fr
+            ret = re
+            frame = fr
             frame_expanded = np.expand_dims(frame, axis=0)
 
             # height, width, channel = frame.shape
@@ -377,7 +369,6 @@ class Thread2(QThread):
                 min_score_thresh=MIN_ratio,  # 최소 인식률
                 line_thickness=2)  # 선두께
 
-            print('스레드2 돌아감')
             try:
                 pixmap = QPixmap('00.jpg')
                 pixmap = pixmap.scaled(260, 50)
@@ -413,10 +404,8 @@ class Thread2(QThread):
                     try:
                         result_chars = NP.number_recognition('car.jpg')
                         이미지 전달
-
                         ui.Num_Plate_lb.setText(result_chars)
                         결과값 출
-
                         pixmap = QPixmap('00.jpg')
                         pixmap = pixmap.scaled(200, 50)
                         ui.Plate_img_lb.setPixmap(pixmap)
@@ -424,14 +413,6 @@ class Thread2(QThread):
                     except:
                         print("응안돼")
             '''
-
-            # print(objects)
-
-            # key = cv2.waitKey(1) & 0xFF
-
-            # if key == ord("q"):
-            #    break
-            print('스레드2  와일슬립')
             sleep(0)
 
 
