@@ -336,11 +336,6 @@ class Thread2(QThread):
 
         num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 
-        print("make tensor time : %0.5f" % (time.time() - time1))
-
-        prevtime = 0
-
-        # thread_1 = Process(target = find_detection_target, args = (categories_index, classes, scores))#쓰레드 생성
         print("road Video time : %0.5f" % (time.time() - time1))
 
         while True:
