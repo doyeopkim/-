@@ -12,7 +12,8 @@ import numpy as np
 import tensorflow as tf
 
 import pymysql
-conn = pymysql.connect(host = 'localhost', user = 'root', password = '1234' ,db = 'Car_Num', charset='utf8')
+
+conn = pymysql.connect(host='localhost', user='root', password='1234', db='Car_Num', charset='utf8')
 # host = DB주소(localhost 또는 ip주소), user = DB id, password = DB password, db = DB명
 curs = conn.cursor()
 
@@ -20,28 +21,26 @@ config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
 
-
 from queue import Queue
 from threading import Thread
 from multiprocessing import Process, Queue
 from object_detection.utils import label_map_util as lmu
 from object_detection.utils import visualization_utils2 as vis_util
+
 '''
 객체인식 원형코드 사용시from object_detection.utils import visualization_utils as vis_util
 객체인식 변형코드 사용시 from object_detection.utils import visualization_utils2 as vis_util <<<----- 번호판 인식모델
 '''
-from object_detection.utils.visualization_utils2 import car_info # <<< utils2 를 설정했을때 사용할것
-#from object_detection.utils import ops as utils_ops
+from object_detection.utils.visualization_utils2 import car_info  # <<< utils2 를 설정했을때 사용할것
+# from object_detection.utils import ops as utils_ops
 
 from time import sleep
 
 # file import
-#import NumberPlate as NP
+# import NumberPlate as NP
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.Qt import *
-
-
 
 
 class Ui_Dialog(QWidget, object):
@@ -112,7 +111,7 @@ class Ui_Dialog(QWidget, object):
         self.Logo_lb.setGeometry(QtCore.QRect(50, 30, 350, 126))
         self.Logo_lb.setStyleSheet("background-color: rgb()")
         pixmap = QPixmap('image/logo.png')
-        #pixmap = pixmap.scaled(350, 126)  # 사이즈 재설정
+        # pixmap = pixmap.scaled(350, 126)  # 사이즈 재설정
         self.Logo_lb.setPixmap(pixmap)
 
         # 디자인용 선 라벨
@@ -140,7 +139,8 @@ class Ui_Dialog(QWidget, object):
         # 번호판 라벨
         self.Num_Plate_lb = QtWidgets.QLabel(Dialog)
         self.Num_Plate_lb.setGeometry(QtCore.QRect(785, 315, 310, 60))  # 785 290 31 60
-        self.Num_Plate_lb.setStyleSheet('background-color: rgb(); font-weight : bold; font-size: 36pt; font-family: 맑은 고딕;')
+        self.Num_Plate_lb.setStyleSheet(
+            'background-color: rgb(); font-weight : bold; font-size: 36pt; font-family: 맑은 고딕;')
         self.Num_Plate_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.Num_Plate_lb.setText('')
         self.Num_Plate_lb.setVisible(False)
@@ -204,7 +204,6 @@ class Ui_Dialog(QWidget, object):
         self.Register_lb.setText('등록하기')
         self.Register_lb.setVisible(False)
 
-
         # 프레임 라벨
         self.Fps_lb = QtWidgets.QLabel(Dialog)
         self.Fps_lb.setGeometry(QtCore.QRect(55, 643, 81, 16))
@@ -217,11 +216,11 @@ class Ui_Dialog(QWidget, object):
         self.Maker_lb.setAlignment(QtCore.Qt.AlignRight)
         self.Maker_lb.setText('The Fuel Classifier System  |  Team. Oil Shock')
 
-    def setImage(self, image): # 이미지를 라벨에 넣는 함수
+    def setImage(self, image):  # 이미지를 라벨에 넣는 함수
         ui.Video_lb.setPixmap(QtGui.QPixmap.fromImage(image))
 
     # Event 함수
-    def Rec_button_clicked(self): # 시작 버튼 이벤트
+    def Rec_button_clicked(self):  # 시작 버튼 이벤트
         th1 = Thread(self)
         th1.changePixmap.connect(self.setImage)
         th2 = Thread2(self)
@@ -231,27 +230,26 @@ class Ui_Dialog(QWidget, object):
         th2.start()
         print('스레드2시작')
 
-    def Register_button_clicked(self): # 등록 버튼 이벤트
+    def Register_button_clicked(self):  # 등록 버튼 이벤트
         print('등록')
 
-    def Cancel_button_clicked(self): # 취소 버튼 이벤트
+    def Cancel_button_clicked(self):  # 취소 버튼 이벤트
         print('취소')
 
-    def Confirm_button_clicked(self): # 확인 버튼 이벤트
+    def Confirm_button_clicked(self):  # 확인 버튼 이벤트
         print('확인')
+
 
 class Thread(QThread):
     changePixmap = pyqtSignal(QImage)
 
     def run(self):
-        sleep(12)
         print('스레드1 슬립')
 
         prevtime = 0
 
         while True:
             print('스레드1 읽음')
-            #k = cv2.waitKey(15)
             ret, frame = capture.read()
 
             # 프레임 표시
@@ -260,7 +258,7 @@ class Thread(QThread):
             prevtime = curtime
             fps = 1 / sec
             str = "FPS : %0.1f" % fps
-            #cv2.putText(frame, str, (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0))
+            # cv2.putText(frame, str, (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0))
             ui.Fps_lb.setText(str)
             # end 프레임
 
@@ -275,9 +273,9 @@ class Thread(QThread):
                 print('스레드 1 영상 ui에 올리기 직전')
                 self.changePixmap.emit(p)
 
-            #key = cv2.waitKey(1) & 0xFF
+            # key = cv2.waitKey(1) & 0xFF
 
-            #if key == ord("q"):
+            # if key == ord("q"):
             #    break
             print('스레드1 와일슬립')
             sleep(0)
@@ -290,6 +288,7 @@ def Regi_ui():
     ui.Num_Plate_lb.setVisible(True)
     ui.Plz_register_lb.setVisible(True)
     ui.Register_lb.setVisible(True)
+
 
 def Exis_ui():
     ui.Confirm_button.setVisible(True)
@@ -358,7 +357,7 @@ class Thread2(QThread):
             ret, frame = capture.read()
             frame_expanded = np.expand_dims(frame, axis=0)
 
-            #height, width, channel = frame.shape
+            # height, width, channel = frame.shape
             if not ret:
                 print("나간다")
                 break
@@ -374,16 +373,16 @@ class Thread2(QThread):
                 np.squeeze(classes).astype(np.int32),
                 np.squeeze(scores),
                 categories_index,
-                use_normalized_coordinates = True,
-                min_score_thresh = MIN_ratio,#최소 인식률
-                line_thickness = 2) #선두께
+                use_normalized_coordinates=True,
+                min_score_thresh=MIN_ratio,  # 최소 인식률
+                line_thickness=2)  # 선두께
 
             print('스레드2 돌아감')
             try:
                 pixmap = QPixmap('00.jpg')
                 pixmap = pixmap.scaled(260, 50)
 
-                ui.Num_Plate_lb.setText(str(car_info[0]) )
+                ui.Num_Plate_lb.setText(str(car_info[0]))
                 ui.Plate_img_lb.setPixmap(pixmap)
 
                 curs = conn.cursor()
@@ -414,30 +413,27 @@ class Thread2(QThread):
                     try:
                         result_chars = NP.number_recognition('car.jpg')
                         이미지 전달
-                        
+
                         ui.Num_Plate_lb.setText(result_chars)
                         결과값 출
 
-                        
                         pixmap = QPixmap('00.jpg')
                         pixmap = pixmap.scaled(200, 50)
                         ui.Plate_img_lb.setPixmap(pixmap)
                         # print(NP.check())
-
                     except:
                         print("응안돼")
             '''
 
             # print(objects)
 
+            # key = cv2.waitKey(1) & 0xFF
 
-
-            #key = cv2.waitKey(1) & 0xFF
-
-            #if key == ord("q"):
+            # if key == ord("q"):
             #    break
             print('스레드2  와일슬립')
             sleep(0)
+
 
 if __name__ == "__main__":
     import sys
@@ -452,6 +448,6 @@ if __name__ == "__main__":
     Dialog.show()
 
     # capture = cv2.VideoCapture(0)
-    capture = cv2.VideoCapture("asdf.mp4")  # 20190916_165145 162900
+    capture = cv2.VideoCapture("20190924_103106.mp4")  # 165145 162900
 
     sys.exit(app.exec_())
