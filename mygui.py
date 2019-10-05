@@ -8,22 +8,13 @@
 import os
 import cv2
 import time
+from time import sleep
 import numpy as np
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import *
 import tensorflow as tf
-
 import pymysql
-
-conn = pymysql.connect(host='localhost', user='root', password='1234', db='Car_Num', charset='utf8')
-# host = DB주소(localhost 또는 ip주소), user = DB id, password = DB password, db = DB명
-curs = conn.cursor()
-
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-session = tf.Session(config=config)
-
-from queue import Queue
 from threading import Thread
-from multiprocessing import Process, Queue
 from object_detection.utils import label_map_util as lmu
 from object_detection.utils import visualization_utils2 as vis_util
 
@@ -34,14 +25,13 @@ from object_detection.utils import visualization_utils2 as vis_util
 from object_detection.utils.visualization_utils2 import car_info  # <<< utils2 를 설정했을때 사용할것
 # from object_detection.utils import ops as utils_ops
 
-from time import sleep
+conn = pymysql.connect(host='localhost', user='root', password='1234', db='Car_Num', charset='utf8')
+# host = DB주소(localhost 또는 ip주소), user = DB id, password = DB password, db = DB명
+curs = conn.cursor()
 
-# file import
-# import NumberPlate as NP
-
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.Qt import *
-
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+session = tf.Session(config=config)
 
 class Ui_Dialog(QWidget, object):
 
@@ -344,7 +334,6 @@ class Thread2(QThread):
             frame = fr
             frame_expanded = np.expand_dims(frame, axis=0)
 
-            # height, width, channel = frame.shape
             if not ret:
                 print("나간다")
                 break
@@ -392,22 +381,6 @@ class Thread2(QThread):
 
             except:
                 pass
-
-            '''
-                    Result = frame[ymin:ymax, xmin:xmax]
-                    cv2.imwrite('car.jpg', Result)
-                    try:
-                        result_chars = NP.number_recognition('car.jpg')
-                        이미지 전달
-                        ui.Num_Plate_lb.setText(result_chars)
-                        결과값 출
-                        pixmap = QPixmap('00.jpg')
-                        pixmap = pixmap.scaled(200, 50)
-                        ui.Plate_img_lb.setPixmap(pixmap)
-                        # print(NP.check())
-                    except:
-                        print("응안돼")
-            '''
             sleep(0)
 
 
@@ -424,6 +397,6 @@ if __name__ == "__main__":
     Dialog.show()
 
     # capture = cv2.VideoCapture(0)
-    capture = cv2.VideoCapture("20190924_103106.mp4")  # 165145 162900
+    capture = cv2.VideoCapture("asdf.mp4")  # 165145 162900
 
     sys.exit(app.exec_())
