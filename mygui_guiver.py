@@ -44,18 +44,32 @@ class Ui_Dialog(QWidget, object):
         Dialog.setSizeGripEnabled(False)
         Dialog.setModal(False)
 
-        #배경 라벨
+        # Fixed Ui & 배경 라벨
         self.Main_lb = QtWidgets.QLabel(Dialog)
         self.Main_lb.setGeometry(QtCore.QRect(0, 0, 1280, 720))
         pixmap = QPixmap('image/theme.jpg')
         pixmap = pixmap.scaled(1280, 720)  # 사이즈 재설정
         self.Main_lb.setPixmap(pixmap)
 
-        # Intro Ui
-        # 인트로 프레임
-        self.Intro_fr = QtWidgets.QFrame(Dialog)  # 결과창 프레임
+        # 로고 이미지 라벨
+        self.Logo_lb = QtWidgets.QLabel(Dialog)
+        self.Logo_lb.setGeometry(QtCore.QRect(50, 30, 350, 126))
+        self.Logo_lb.setStyleSheet("background-color: rgb()")
+        pixmap = QPixmap('image/logo.png')
+        # pixmap = pixmap.scaled(350, 126)  # 사이즈 재설정
+        self.Logo_lb.setPixmap(pixmap)
+
+        # 제작자 라벨
+        self.Maker_lb = QtWidgets.QLabel(Dialog)
+        self.Maker_lb.setGeometry(QtCore.QRect(990, 694, 274, 16))
+        self.Maker_lb.setStyleSheet('background-color: rgb(); font-size: 10pt; font-family: 맑은 고딕;')
+        self.Maker_lb.setAlignment(QtCore.Qt.AlignRight)
+        self.Maker_lb.setText('The Fuel Classifier System  |  Team. Oil Shock')
+
+        # Intro Ui & 인트로 프레임
+        self.Intro_fr = QtWidgets.QFrame(Dialog)
         self.Intro_fr.setGeometry(QtCore.QRect(0, 0, 1280, 720))
-        self.Intro_fr.setStyleSheet("background-color: rgb(204, 204, 204, 50);")  # 204 255 255 // 102 204 255
+        self.Intro_fr.setStyleSheet("background-color: rgb(204, 204, 204, 50);")
         self.Intro_fr.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Intro_fr.setFrameShadow(QtWidgets.QFrame.Raised)
 
@@ -84,164 +98,173 @@ class Ui_Dialog(QWidget, object):
         # 시작 버튼
         self.Rec_button = QtWidgets.QPushButton(self.Intro_fr)
         self.Rec_button.setGeometry(QtCore.QRect(540, 480, 200, 70))
-        self.Rec_button.setStyleSheet('border : 3px solid black; border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 24pt; font-family: 맑은 고딕;')
+        self.Rec_button.setStyleSheet('border : 3px solid black; border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 32pt; font-family: 맑은 고딕;')
         self.Rec_button.setText('시 작')
-        self.Rec_button.clicked.connect(self.Rec_button_clicked)  # 카메라 버튼이벤트 생성
+        self.Rec_button.clicked.connect(self.Rec_button_clicked)  # 버튼이벤트
+        # 인트로 프레임 컽
 
-        #
-        self.frame = QtWidgets.QFrame(Dialog)  # 결과창 프레임
-        self.frame.setGeometry(QtCore.QRect(650, 190, 580, 480))
-        self.frame.setStyleSheet(
-            "border-radius: 10px; background-color: rgb(204, 204, 204, 100);")  # 204 255 255 // 102 204 255
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setVisible(False)
-
-        '''버튼&아이콘 생성자'''
-        # 등록 버튼
-        self.Register_button = QtWidgets.QPushButton(Dialog)
-        self.Register_button.setGeometry(QtCore.QRect(950, 560, 140, 50))
-        self.Register_button.setStyleSheet(
-            'border-radius: 5px; background-color: rgb(051, 051, 051); color : rgb(255, 255, 255); font-size: 24pt; font-family: 맑은 고딕;')  # 255 102 051
-        self.Register_button.setText('등록하기')
-        self.Register_button.clicked.connect(self.Register_button_clicked)  # 취소 버튼이벤트 생성
-        self.Register_button.setVisible(False)
-
-        # 취소 버튼
-        self.Cancel_button = QtWidgets.QPushButton(Dialog)
-        self.Cancel_button.setGeometry(QtCore.QRect(790, 560, 140, 50))
-        self.Cancel_button.setStyleSheet(
-            'border-radius: 5px; background-color: rgb(051, 051, 051); color : rgb(255, 255, 255); font-size: 24pt; font-family: 맑은 고딕;')  # 255 102 051
-        self.Cancel_button.setText('취 소')
-        self.Cancel_button.clicked.connect(self.Cancel_button_clicked)  # 취소 버튼이벤트 생성
-        self.Cancel_button.setVisible(False)
-
-        # 확인 버튼
-        self.Confirm_button = QtWidgets.QPushButton(Dialog)
-        self.Confirm_button.setGeometry(QtCore.QRect(950, 560, 140, 50))
-        self.Confirm_button.setStyleSheet(
-            'border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 24pt; font-family: 맑은 고딕;')
-        self.Confirm_button.setText('확 인')
-        self.Confirm_button.clicked.connect(self.Confirm_button_clicked)  # 확인 버튼이벤트 생성
-        self.Confirm_button.setVisible(False)
-
-        '''라벨생성자'''
-        # 로고 이미지 라벨
-        self.Logo_lb = QtWidgets.QLabel(Dialog)
-        self.Logo_lb.setGeometry(QtCore.QRect(50, 30, 350, 126))
-        self.Logo_lb.setStyleSheet("background-color: rgb()")
-        pixmap = QPixmap('image/logo.png')
-        # pixmap = pixmap.scaled(350, 126)  # 사이즈 재설정
-        self.Logo_lb.setPixmap(pixmap)
-
-        # 디자인용 선 라벨
-        '''self.Line_lb = QtWidgets.QLabel(Dialog)
-        self.Line_lb.setGeometry(QtCore.QRect(170, 160, 1080, 4))
-        self.Line_lb.setStyleSheet('background-color: rgb(000, 000, 000);')'''
+        # Main Ui & 메인 프레임
+        self.Main_fr = QtWidgets.QFrame(Dialog)
+        self.Main_fr.setGeometry(QtCore.QRect(0, 0, 1280, 720))
+        self.Main_fr.setStyleSheet("background-color: rgb();")
+        self.Main_fr.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Main_fr.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Main_fr.setVisible(False)
 
         # 영상이 나올 라벨
-        self.Video_lb = QtWidgets.QLabel(Dialog)
+        self.Video_lb = QtWidgets.QLabel(self.Main_fr)
         self.Video_lb.setGeometry(QtCore.QRect(50, 190, 580, 480))
-        self.Video_lb.setStyleSheet(
-            'border : 4px solid black; border-radius: 10px; background-color: rgb(204, 204, 204, 100); font-size: 30pt; font-family: 맑은 고딕;')  # 폰트&사이즈
+        self.Video_lb.setStyleSheet('border : 4px solid black; border-radius: 10px; background-color: rgb(204, 204, 204, 100); font-size: 30pt; font-family: 맑은 고딕;')  # 폰트&사이즈
         self.Video_lb.setText('여기에 카메라 \n영상이 재생됩니다.')
         self.Video_lb.setAlignment(QtCore.Qt.AlignCenter)  # 중앙 정렬
-        self.Video_lb.setVisible(False)
-
-        # 번호판 이미지 라벨
-        self.Plate_img_lb = QtWidgets.QLabel(Dialog)
-        self.Plate_img_lb.setGeometry(QtCore.QRect(810, 250, 260, 50))
-        self.Plate_img_lb.setStyleSheet('background-color: rgb(000, 000, 000);')
-        # pixmap = QPixmap('00.jpg')
-        # pixmap = pixmap.scaled(140, 140)
-        # self.Plate_img_lb.setPixmap(pixmap)
-        self.Plate_img_lb.setVisible(False)
-
-        # 번호판 라벨
-        self.Num_Plate_lb = QtWidgets.QLabel(Dialog)
-        self.Num_Plate_lb.setGeometry(QtCore.QRect(785, 315, 310, 60))  # 785 290 31 60
-        self.Num_Plate_lb.setStyleSheet(
-            'background-color: rgb(); font-weight : bold; font-size: 36pt; font-family: 맑은 고딕;')
-        self.Num_Plate_lb.setAlignment(QtCore.Qt.AlignCenter)
-        self.Num_Plate_lb.setText('')
-        self.Num_Plate_lb.setVisible(False)
-
-        # (고객님의 유종은)Text 라벨
-        self.Cus_oil_lb = QtWidgets.QLabel(Dialog)
-        self.Cus_oil_lb.setGeometry(QtCore.QRect(740, 380, 400, 60))
-        self.Cus_oil_lb.setStyleSheet('background-color: rgb(); font-size: 30pt; font-family: 맑은 고딕;')
-        self.Cus_oil_lb.setAlignment(QtCore.Qt.AlignCenter)
-        self.Cus_oil_lb.setText('고객님 차량의 유종은')
-        self.Cus_oil_lb.setVisible(False)
-
-        # 유종 정보 라벨
-        self.Oil_type_lb = QtWidgets.QLabel(Dialog)
-        self.Oil_type_lb.setGeometry(QtCore.QRect(747, 430, 264, 60))
-        self.Oil_type_lb.setStyleSheet(
-            'color : rgb(000, 000, 000); background-color: rgb(); font-weight : bold; font-size: 30pt; font-family: 맑은 고딕;')
-        self.Oil_type_lb.setAlignment(QtCore.Qt.AlignCenter)
-        self.Oil_type_lb.setText('휘발유(가솔린)')
-        self.Oil_type_lb.setVisible(False)
-
-        # (입니다)Text 라벨
-        self.Ex_last_lb = QtWidgets.QLabel(Dialog)
-        self.Ex_last_lb.setGeometry(QtCore.QRect(1015, 430, 130, 60))
-        self.Ex_last_lb.setStyleSheet('background-color: rgb(); font-size: 30pt; font-family: 맑은 고딕;')
-        self.Ex_last_lb.setAlignment(QtCore.Qt.AlignCenter)
-        self.Ex_last_lb.setText('입니다.')
-        self.Ex_last_lb.setVisible(False)
-
-        # (유종 정보가 맞다면 (확인)을 눌러주세요.)Text 라벨
-        self.Plz_continue_lb = QtWidgets.QLabel(Dialog)
-        self.Plz_continue_lb.setGeometry(QtCore.QRect(723, 510, 434, 30))
-        self.Plz_continue_lb.setStyleSheet('background-color: rgb(); font-size: 18pt; font-family: 맑은 고딕;')
-        self.Plz_continue_lb.setAlignment(QtCore.Qt.AlignCenter)
-        self.Plz_continue_lb.setText('유종 정보가 맞다면         을 눌러주세요.')
-        self.Plz_continue_lb.setVisible(False)
-
-        # (확인)Text 라벨
-        self.Check_lb = QtWidgets.QLabel(Dialog)
-        self.Check_lb.setGeometry(QtCore.QRect(937, 510, 60, 30))
-        self.Check_lb.setStyleSheet(
-            'border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 18pt; font-family: 맑은 고딕;')
-        self.Check_lb.setAlignment(QtCore.Qt.AlignCenter)
-        self.Check_lb.setText('확 인')
-        self.Check_lb.setVisible(False)
-
-        # (유종 정보가 없다면 (등록하기)를 눌러주세요.)Text 라벨
-        self.Plz_register_lb = QtWidgets.QLabel(Dialog)
-        self.Plz_register_lb.setGeometry(QtCore.QRect(703, 510, 474, 30))
-        self.Plz_register_lb.setStyleSheet('background-color: rgb(); font-size: 18pt; font-family: 맑은 고딕;')
-        self.Plz_register_lb.setAlignment(QtCore.Qt.AlignCenter)
-        self.Plz_register_lb.setText('유종 정보가 없다면              를 눌러주세요.')
-        self.Plz_register_lb.setVisible(False)
-
-        # (등록하기)Text 라벨
-        self.Register_lb = QtWidgets.QLabel(Dialog)
-        self.Register_lb.setGeometry(QtCore.QRect(918, 510, 100, 30))
-        self.Register_lb.setStyleSheet(
-            'border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 18pt; font-family: 맑은 고딕;')
-        self.Register_lb.setAlignment(QtCore.Qt.AlignCenter)
-        self.Register_lb.setText('등록하기')
-        self.Register_lb.setVisible(False)
 
         # 프레임 라벨
         self.Fps_lb = QtWidgets.QLabel(Dialog)
         self.Fps_lb.setGeometry(QtCore.QRect(55, 643, 81, 16))
         self.Fps_lb.setStyleSheet('background-color: rgb(); color : white; font-size: 10pt; font-family: 맑은 고딕;')
 
-        # 제작자 라벨
-        self.Maker_lb = QtWidgets.QLabel(Dialog)
-        self.Maker_lb.setGeometry(QtCore.QRect(990, 694, 274, 16))
-        self.Maker_lb.setStyleSheet('background-color: rgb(); font-size: 10pt; font-family: 맑은 고딕;')
-        self.Maker_lb.setAlignment(QtCore.Qt.AlignRight)
-        self.Maker_lb.setText('The Fuel Classifier System  |  Team. Oil Shock')
+        # 결과창 프레임
+        self.frame = QtWidgets.QFrame(self.Main_fr)
+        self.frame.setGeometry(QtCore.QRect(650, 190, 580, 480))
+        self.frame.setStyleSheet("border-radius: 10px; background-color: rgb(204, 204, 204, 100);")  # 204 255 255 // 102 204 255
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Loading_lb = QtWidgets.QLabel(self.frame)
+        self.Loading_lb.setGeometry(QtCore.QRect(147, 210, 286, 60))
+        self.Loading_lb.setStyleSheet('background-color: rgb(); font-weight : bold; font-size: 30pt; font-family: 맑은 고딕;')
+        self.Loading_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Loading_lb.setText('번호판 인식 중..')
+
+        # 유종 정보 등록된 프레임
+        self.Ex_fr = QtWidgets.QFrame(self.Main_fr)
+        self.Ex_fr.setGeometry(QtCore.QRect(650, 190, 580, 480))
+        self.Ex_fr.setStyleSheet(
+            "border-radius: 10px; background-color: rgb(204, 204, 204, 100);")  # 204 255 255 // 102 204 255
+        self.Ex_fr.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Ex_fr.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Ex_fr.setVisible(False)
+        # (고객님의 유종은)Text 라벨
+        self.Cus_oil_lb = QtWidgets.QLabel(self.Ex_fr)
+        self.Cus_oil_lb.setGeometry(QtCore.QRect(90, 190, 400, 60))
+        self.Cus_oil_lb.setStyleSheet('background-color: rgb(); font-size: 30pt; font-family: 맑은 고딕;')
+        self.Cus_oil_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Cus_oil_lb.setText('고객님 차량의 유종은')
+        # 유종 정보 라벨
+        self.Oil_type_lb = QtWidgets.QLabel(self.Ex_fr)
+        self.Oil_type_lb.setGeometry(QtCore.QRect(97, 240, 264, 60))
+        self.Oil_type_lb.setStyleSheet(
+            'color : rgb(000, 000, 000); background-color: rgb(); font-weight : bold; font-size: 30pt; font-family: 맑은 고딕;')
+        self.Oil_type_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Oil_type_lb.setText('휘발유(가솔린)')
+        # (입니다)Text 라벨
+        self.Ex_last_lb = QtWidgets.QLabel(self.Ex_fr)
+        self.Ex_last_lb.setGeometry(QtCore.QRect(365, 240, 130, 60))
+        self.Ex_last_lb.setStyleSheet('background-color: rgb(); font-size: 30pt; font-family: 맑은 고딕;')
+        self.Ex_last_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Ex_last_lb.setText('입니다.')
+        # (유종 정보가 맞다면 (확인)을 눌러주세요.)Text 라벨
+        self.Plz_continue_lb = QtWidgets.QLabel(self.Ex_fr)
+        self.Plz_continue_lb.setGeometry(QtCore.QRect(73, 320, 434, 30))
+        self.Plz_continue_lb.setStyleSheet('background-color: rgb(); font-size: 18pt; font-family: 맑은 고딕;')
+        self.Plz_continue_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Plz_continue_lb.setText('유종 정보가 맞다면         을 눌러주세요.')
+        # (확인)Text 라벨
+        self.Check_lb = QtWidgets.QLabel(self.Ex_fr)
+        self.Check_lb.setGeometry(QtCore.QRect(286, 324, 63, 22.5))
+        self.Check_lb.setStyleSheet(
+            'border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 12pt; font-family: 맑은 고딕;')
+        self.Check_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Check_lb.setText('확 인')
+        # 확인 버튼
+        self.Confirm_button = QtWidgets.QPushButton(self.Ex_fr)
+        self.Confirm_button.setGeometry(QtCore.QRect(300, 370, 140, 50))
+        self.Confirm_button.setStyleSheet(
+            'border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 24pt; font-family: 맑은 고딕;')
+        self.Confirm_button.setText('확 인')
+        self.Confirm_button.clicked.connect(self.Confirm_button_clicked)  # 확인 버튼이벤트
+        # 유종 정보 등록 프레임 컽
+
+        # 유종 정보 미등록 프레임
+        self.Regi_fr = QtWidgets.QFrame(self.Main_fr)
+        self.Regi_fr.setGeometry(QtCore.QRect(650, 190, 580, 480))
+        self.Regi_fr.setStyleSheet(
+            "border-radius: 10px; background-color: rgb(204, 204, 204, 100);")  # 204 255 255 // 102 204 255
+        self.Regi_fr.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Regi_fr.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Regi_fr.setVisible(False)
+        # (고객님의 차량은)Text 라벨
+        self.Cus_oil_none_lb = QtWidgets.QLabel(self.Regi_fr)
+        self.Cus_oil_none_lb.setGeometry(QtCore.QRect(145, 190, 290, 60))
+        self.Cus_oil_none_lb.setStyleSheet('background-color: rgb(); font-size: 30pt; font-family: 맑은 고딕;')
+        self.Cus_oil_none_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Cus_oil_none_lb.setText('고객님의 차량은')
+        # (유종 정보가 없습니다)Text 라벨
+        self.Oil_type_none_lb = QtWidgets.QLabel(self.Regi_fr)
+        self.Oil_type_none_lb.setGeometry(QtCore.QRect(94, 240, 392, 60))
+        self.Oil_type_none_lb.setStyleSheet(
+            'color : rgb(000, 000, 000); background-color: rgb(); font-size: 30pt; font-family: 맑은 고딕;')
+        self.Oil_type_none_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Oil_type_none_lb.setText('유종 정보가 없습니다.')
+        # (유종 정보를 등록하시려면 (등록하기)를 눌러주세요.)Text 라벨
+        self.Plz_register_lb = QtWidgets.QLabel(self.Regi_fr)
+        self.Plz_register_lb.setGeometry(QtCore.QRect(33, 320, 514, 30))
+        self.Plz_register_lb.setStyleSheet('background-color: rgb(); font-size: 18pt; font-family: 맑은 고딕;')
+        self.Plz_register_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Plz_register_lb.setText('유종 정보를 등록하시려면          를 눌러주세요.')
+        # (등록하기)Text 라벨
+        self.Register_lb = QtWidgets.QLabel(self.Regi_fr)
+        self.Register_lb.setGeometry(QtCore.QRect(319, 324, 70, 25))
+        self.Register_lb.setStyleSheet(
+            'border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 12pt; font-family: 맑은 고딕;')
+        self.Register_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Register_lb.setText('등록하기')
+        # 등록 버튼
+        self.Register_button = QtWidgets.QPushButton(self.Regi_fr)
+        self.Register_button.setGeometry(QtCore.QRect(300, 370, 140, 50))
+        self.Register_button.setStyleSheet(
+            'border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 20pt; font-family: 맑은 고딕;')
+        self.Register_button.setText('등록하기')
+        self.Register_button.clicked.connect(self.Register_button_clicked)  # 등록 버튼이벤트
+        # 유종 정보 미등록 프레임 컽
+
+        # 이미지, 번호판, 취소버튼 프레임
+        self.Rema_fr = QtWidgets.QFrame(self.Main_fr)
+        self.Rema_fr.setGeometry(QtCore.QRect(650, 190, 580, 480))
+        self.Rema_fr.setStyleSheet(
+            "border-radius: 10px; background-color: rgb();")  # 204 255 255 // 102 204 255
+        self.Rema_fr.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Rema_fr.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Rema_fr.setVisible(False)
+        # 번호판 이미지 라벨
+        self.Plate_img_lb = QtWidgets.QLabel(self.Rema_fr)
+        self.Plate_img_lb.setGeometry(QtCore.QRect(160, 60, 260, 50))
+        self.Plate_img_lb.setStyleSheet('background-color: rgb(000, 000, 000);')
+        # pixmap = QPixmap('00.jpg')
+        # pixmap = pixmap.scaled(140, 140)
+        # self.Plate_img_lb.setPixmap(pixmap)
+        # 번호판 라벨
+        self.Num_Plate_lb = QtWidgets.QLabel(self.Rema_fr)
+        self.Num_Plate_lb.setGeometry(QtCore.QRect(625, 125, 310, 60))  # 785 290 31 60
+        self.Num_Plate_lb.setStyleSheet('background-color: rgb(); font-weight : bold; font-size: 36pt; font-family: 맑은 고딕;')
+        self.Num_Plate_lb.setAlignment(QtCore.Qt.AlignCenter)
+        self.Num_Plate_lb.setText('')
+        # 취소 버튼
+        self.Cancel_button = QtWidgets.QPushButton(self.Rema_fr)
+        self.Cancel_button.setGeometry(QtCore.QRect(140, 370, 140, 50))
+        self.Cancel_button.setStyleSheet('border-radius: 5px; background-color: rgb(051, 051, 051); color : rgb(255, 255, 255); font-size: 24pt; font-family: 맑은 고딕;')  # 255 102 051
+        self.Cancel_button.setText('취 소')
+        self.Cancel_button.clicked.connect(self.Cancel_button_clicked)  # 취소 버튼이벤트
+        # 나머지 프레임 컽
+        # 메인 프레임 컽
 
     def setImage(self, image):  # 이미지를 라벨에 넣는 함수
         ui.Video_lb.setPixmap(QtGui.QPixmap.fromImage(image))
 
     # Event 함수
     def Rec_button_clicked(self):  # 시작 버튼 이벤트
+        self.Intro_fr.setVisible(False) # 인트로 프레임 Visible = False
+        self.Main_fr.setVisible(True) # 메인 프레임 Visible = True
+
         th1 = Thread(self)
         th1.changePixmap.connect(self.setImage)
         th2 = Thread2(self)
@@ -292,27 +315,6 @@ class Thread(QThread):
                 p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
                 self.changePixmap.emit(p)
             sleep(0)
-
-
-def Regi_ui():
-    ui.Register_button.setVisible(True)
-    ui.Cancel_button.setVisible(True)
-    ui.Plate_img_lb.setVisible(True)
-    ui.Num_Plate_lb.setVisible(True)
-    ui.Plz_register_lb.setVisible(True)
-    ui.Register_lb.setVisible(True)
-
-
-def Exis_ui():
-    ui.Confirm_button.setVisible(True)
-    ui.Cancel_button.setVisible(True)
-    ui.Plate_img_lb.setVisible(True)
-    ui.Num_Plate_lb.setVisible(True)
-    ui.Cus_oil_lb.setVisible(True)
-    ui.Oil_type_lb.setVisible(True)
-    ui.Ex_last_lb.setVisible(True)
-    ui.Plz_continue_lb.setVisible(True)
-    ui.Check_lb.setVisible(True)
 
 
 class Thread2(QThread):
@@ -400,13 +402,21 @@ class Thread2(QThread):
 
                 if rows == ('G',):
                     ui.Oil_type_lb.setText('휘발휘바')
-                    Exis_ui()
-
+                    ui.frame.setVisible(False)
+                    ui.Regi_fr.setVisible(False)
+                    ui.Rema_fr.setVisible(True)
+                    ui.Ex_fr.setVisible(True)
                 elif rows == ('D',):
                     ui.Oil_type_lb.setText("디제디제")
-                    Exis_ui()
+                    ui.frame.setVisible(False)
+                    ui.Regi_fr.setVisible(False)
+                    ui.Rema_fr.setVisible(True)
+                    ui.Ex_fr.setVisible(True)
                 else:
-                    Regi_ui()
+                    ui.frame.setVisible(False)
+                    ui.Ex_fr.setVisible(False)
+                    ui.Rema_fr.setVisible(True)
+                    ui.Regi_fr.setVisible(True)
                 conn.close()
 
             except:
