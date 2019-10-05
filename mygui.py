@@ -281,8 +281,7 @@ def Exis_ui():
     ui.Oil_type_lb.setVisible(True)
     ui.Ex_last_lb.setVisible(True)
     ui.Plz_continue_lb.setVisible(True)
-    ui.Plz_register_lb.setVisible(True)
-    ui.Register_lb.setVisible(True)
+    ui.Check_lb.setVisible(True)
 
 
 class Thread2(QThread):
@@ -398,5 +397,6 @@ if __name__ == "__main__":
 
     # capture = cv2.VideoCapture(0)
     capture = cv2.VideoCapture("asdf.mp4")  # 165145 162900
+    Exis_ui()
 
     sys.exit(app.exec_())
