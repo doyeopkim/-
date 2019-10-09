@@ -281,7 +281,6 @@ class Ui_Dialog(QWidget, object):
 
     # Event 함수
     def Rec_button_clicked(self):  # 시작 버튼 이벤트
-
         self.Intro_fr.setVisible(False) # 인트로 프레임 Visible = False
         self.Main_fr.setVisible(True) # 메인 프레임 Visible = True
 
@@ -427,30 +426,21 @@ class Thread2(QThread):
                 print(rows)
 
                 if rows == ('G',):
-                    pixmap = QPixmap('00.jpg')
-                    pixmap = pixmap.scaled(260, 50)
-                    ui.Num_Plate_lb.setText(str(car_info[0]))
-                    ui.Plate_img_lb.setPixmap(pixmap)
+                    self.SetImgNumlb()
                     ui.Oil_type_lb.setText('휘발휘바')
                     ui.frame.setVisible(False)
                     ui.Regi_fr.setVisible(False)
                     ui.Rema_fr.setVisible(True)
                     ui.Ex_fr.setVisible(True)
                 elif rows == ('D',):
-                    pixmap = QPixmap('00.jpg')
-                    pixmap = pixmap.scaled(260, 50)
-                    ui.Num_Plate_lb.setText(str(car_info[0]))
-                    ui.Plate_img_lb.setPixmap(pixmap)
+                    self.SetImgNumlb()
                     ui.Oil_type_lb.setText("디제디제")
                     ui.frame.setVisible(False)
                     ui.Regi_fr.setVisible(False)
                     ui.Rema_fr.setVisible(True)
                     ui.Ex_fr.setVisible(True)
                 else:
-                    pixmap = QPixmap('00.jpg')
-                    pixmap = pixmap.scaled(260, 50)
-                    ui.Num_Plate_lb.setText(str(car_info[0]))
-                    ui.Plate_img_lb.setPixmap(pixmap)
+                    self.SetImgNumlb()
                     ui.frame.setVisible(False)
                     ui.Ex_fr.setVisible(False)
                     ui.Rema_fr.setVisible(True)
@@ -460,6 +450,12 @@ class Thread2(QThread):
             except:
                 pass
             sleep(0)
+            
+    def SetImgNumlb(self): # 번호판 이미지와 인식 문자열 라벨에 올리는 함수
+        pixmap = QPixmap('00.jpg')
+        pixmap = pixmap.scaled(260, 50)
+        ui.Num_Plate_lb.setText(str(car_info[0]))
+        ui.Plate_img_lb.setPixmap(pixmap)
 
 
 if __name__ == "__main__":
