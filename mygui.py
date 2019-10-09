@@ -320,7 +320,7 @@ class Thread(QThread):
         prevtime = 0
 
         while True:
-            k = cv2.waitKey(30)
+            k = cv2.waitKey(30) # 영상 프레임 속도 조절
             ret, frame = capture.read()
             global re, fr
             re = ret
@@ -332,9 +332,7 @@ class Thread(QThread):
             prevtime = curtime
             fps = 1 / sec
             str = "FPS : %0.1f" % fps
-            # cv2.putText(frame, str, (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0))
-            ui.Fps_lb.setText(str)
-            # end 프레임
+            ui.Fps_lb.setText(str) # 프레임 라벨에 지속적으로 갱신
 
             if ret:
                 # https://stackoverflow.com/a/55468544/6622587
@@ -396,15 +394,11 @@ class Thread2(QThread):
             frame = fr
             frame_expanded = np.expand_dims(frame, axis=0)
 
-            if not ret:
-                print('나간다')
-                break
-
             (boxes, scores, classes, nums) = sses.run(  # np.ndarray
                 [detection_boxes, detection_scores, detection_classes, num_detections],
                 feed_dict={image_tensor: frame_expanded}
             )  # end sses.run()
-            print('박스돔')
+
             vis_util.visualize_boxes_and_labels_on_image_array(
                 frame,
                 np.squeeze(boxes),
@@ -423,39 +417,38 @@ class Thread2(QThread):
                 print(sql)
                 curs.execute(sql)  # 쿼리문 실행
                 rows = curs.fetchone()  # 데이터 패치
-                print(rows)
 
                 if rows == ('G',):
-                    self.SetImgNumlb()
-                    ui.Oil_type_lb.setText('휘발휘바')
-                    ui.frame.setVisible(False)
-                    ui.Regi_fr.setVisible(False)
-                    ui.Rema_fr.setVisible(True)
-                    ui.Ex_fr.setVisible(True)
+                    ui.Oil_type_lb.setText('휘발유(가솔린)')
+                    self.Set_Img_Numlb()
+                    self.Ex_Show_Frame()
                 elif rows == ('D',):
-                    self.SetImgNumlb()
-                    ui.Oil_type_lb.setText("디제디제")
-                    ui.frame.setVisible(False)
-                    ui.Regi_fr.setVisible(False)
-                    ui.Rema_fr.setVisible(True)
-                    ui.Ex_fr.setVisible(True)
+                    ui.Oil_type_lb.setText('경유(디젤)')
+                    self.Set_Img_Numlb()
+                    self.Ex_Show_Frame()
                 else:
-                    self.SetImgNumlb()
+                    self.Set_Img_Numlb()
                     ui.frame.setVisible(False)
                     ui.Ex_fr.setVisible(False)
                     ui.Rema_fr.setVisible(True)
                     ui.Regi_fr.setVisible(True)
-                conn.close()
-
             except:
                 pass
+            finally:
+                conn.close()
             sleep(0)
-            
-    def SetImgNumlb(self): # 번호판 이미지와 인식 문자열 라벨에 올리는 함수
+
+    def Set_Img_Numlb(self): # 번호판 이미지와 인식 문자열 라벨에 올리는 함수
         pixmap = QPixmap('00.jpg')
         pixmap = pixmap.scaled(260, 50)
         ui.Num_Plate_lb.setText(str(car_info[0]))
         ui.Plate_img_lb.setPixmap(pixmap)
+
+    def Ex_Show_Frame(self):
+        ui.frame.setVisible(False)
+        ui.Regi_fr.setVisible(False)
+        ui.Rema_fr.setVisible(True)
+        ui.Ex_fr.setVisible(True)
 
 
 if __name__ == "__main__":
