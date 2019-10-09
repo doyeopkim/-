@@ -91,11 +91,11 @@ class Ui_Dialog(QWidget, object):
         self.Start_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.Start_lb.setText('시 작')
         # 시작 버튼
-        self.Rec_button = QtWidgets.QPushButton(self.Intro_fr)
-        self.Rec_button.setGeometry(QtCore.QRect(540, 480, 200, 70))
-        self.Rec_button.setStyleSheet('border : 3px solid black; border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 32pt; font-family: 맑은 고딕;')
-        self.Rec_button.setText('시 작')
-        self.Rec_button.clicked.connect(self.Rec_button_clicked)  # 버튼이벤트
+        self.Start_button = QtWidgets.QPushButton(self.Intro_fr)
+        self.Start_button.setGeometry(QtCore.QRect(540, 480, 200, 70))
+        self.Start_button.setStyleSheet('border : 3px solid black; border-radius: 5px; background-color: rgb(000, 153, 153); color : rgb(255, 255, 255); font-size: 32pt; font-family: 맑은 고딕;')
+        self.Start_button.setText('시 작')
+        self.Start_button.clicked.connect(self.Start_button_clicked)  # 버튼이벤트
         # 인트로 프레임 컽
         #self.Intro_fr.setVisible(False)
 
@@ -280,7 +280,7 @@ class Ui_Dialog(QWidget, object):
         ui.Video_lb.setPixmap(QtGui.QPixmap.fromImage(image))
 
     # Event 함수
-    def Rec_button_clicked(self):  # 시작 버튼 이벤트
+    def Start_button_clicked(self):  # 시작 버튼 이벤트
         self.Intro_fr.setVisible(False) # 인트로 프레임 Visible = False
         self.Main_fr.setVisible(True) # 메인 프레임 Visible = True
 
