@@ -25,7 +25,7 @@ from object_detection.utils import visualization_utils2 as vis_util
 from object_detection.utils.visualization_utils2 import car_info  # <<< utils2 를 설정했을때 사용할것
 # from object_detection.utils import ops as utils_ops
 
-conn = pymysql.connect(host='localhost', user='root', password='1234', db='Car_Num', charset='utf8')
+conn = pymysql.connect(host='localhost', user='root', password='1234', db='OilShock', charset='utf8')
 # host = DB주소(localhost 또는 ip주소), user = DB id, password = DB password, db = DB명
 
 config = tf.ConfigProto()
@@ -400,8 +400,7 @@ class Thread(QThread):
             str = "FPS : %0.1f" % fps
             ui.Fps_lb.setText(str) # 프레임 라벨에 지속적으로 갱신
 
-            if ret:
-                # https://stackoverflow.com/a/55468544/6622587
+            if ret: # https://stackoverflow.com/a/55468544/6622587
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
@@ -479,7 +478,7 @@ class Thread2(QThread):
             try:
                 curs = conn.cursor()
 
-                sql = 'SELECT oil_type from NumPlate Where car_num = ' + "'" + str(car_info[0]) + "'"  # 실행 할 쿼리문 입력
+                sql = 'SELECT oilType from Register Where carNum = ' + "'" + str(car_info[0]) + "'"  # 실행 할 쿼리문 입력
                 print(sql)
                 curs.execute(sql)  # 쿼리문 실행
                 rows = curs.fetchone()  # 데이터 패치
