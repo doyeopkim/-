@@ -15,6 +15,7 @@ from PyQt5.Qt import *
 import tensorflow as tf
 import pymysql
 from threading import Thread
+from datetime import datetime
 from object_detection.utils import label_map_util as lmu
 from object_detection.utils import visualization_utils2 as vis_util
 
@@ -31,6 +32,7 @@ conn = pymysql.connect(host='localhost', user='root', password='1234', db='OilSh
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
+now = datetime.now()    # 현재시각 가져오는 메소드
 
 class Ui_Dialog(QWidget, object):
 
@@ -97,7 +99,7 @@ class Ui_Dialog(QWidget, object):
         self.Start_button.setText('시 작')
         self.Start_button.clicked.connect(self.Start_button_clicked)  # 버튼이벤트
         # 인트로 프레임 컽
-        self.Intro_fr.setVisible(False)
+        #self.Intro_fr.setVisible(False)
 
         # Main Ui & 메인 프레임
         self.Main_fr = QtWidgets.QFrame(Dialog)
@@ -319,6 +321,7 @@ class Ui_Dialog(QWidget, object):
         self.Saving_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.Saving_lb.setText('성공적으로\n등록되었습니다.')
         self.Saving_lb.setVisible(False)
+        self.Register_fr.setVisible(False)
         # 유종 등록 프레임 끝
 
     def setImage(self, image):  # 이미지를 라벨에 넣는 함수
@@ -350,10 +353,39 @@ class Ui_Dialog(QWidget, object):
         self.Saving_lb.setVisible(False)
         self.Regi_SetUi(True)
 
-    def Regi_DB_clicked(self):  # 등록 버튼 이벤트(DB에 추가)
-        sql = 'INSERT INTO '    # DB에 적재 성공했다면 다 지우고 saving라벨 2초 보이고 엔딩 프레임으로 ㄱㄱ
+    def Regi_End_SetUi(self):
         self.Regi_SetUi(False)
         self.Saving_lb.setVisible(True)
+        k = cv2.waitKey(2000)
+        self.Register_fr.setVisible(False)
+        self.End_fr.setVisible(True)
+        k = cv2.waitKey(4000)  # 4초 대기
+        self.End_fr.setVisible(False)
+        self.Intro_fr.setVisible(True)
+
+    def Regi_DB_clicked(self):  # 등록 버튼 이벤트(DB에 추가)
+        oilType = ''    # 유종 변수
+        if self.Choice_Oil_Type_lb.text() == '유종 : 휘발유(가솔린)':   # 휘발유 선택시 이벤트 처리
+            oilType = 'G'
+            regi_sql = 'INSERT INTO Register VALUES (' + '0' + ', ' + "%04d%02d%02d%02d%02d%02d" % (now.year, now.month, now.day, now.hour, now.minute, now.second) + ", ""'" + self.Num_Plate_lb.text() + "', ""'" + oilType + "'"", " + 'null' + ", " + 'null' ')'
+            curs = conn.cursor()
+            curs.execute(regi_sql)
+            conn.commit()
+            self.Regi_End_SetUi()
+        elif self.Choice_Oil_Type_lb.text() == '유종 : 경유(디젤)':   # 경유 선택시 이벤트 처리
+            oilType = 'D'
+            regi_sql = 'INSERT INTO Register VALUES (' + '0' + ', ' + "%04d%02d%02d%02d%02d%02d" % (now.year, now.month, now.day, now.hour, now.minute, now.second) + ", ""'" + self.Num_Plate_lb.text() + "', ""'" + oilType + "'"", " + 'null' + ", " + 'null' ')'
+            curs = conn.cursor()
+            curs.execute(regi_sql)
+            conn.commit()
+            self.Regi_End_SetUi()
+        else:   # 유종 미선택 에러 메시지박스
+            msg = QMessageBox()
+            msg.setWindowTitle('오류')
+            msg.setText('유종을 선택해 주세요.')
+            msg.setStandardButtons(QMessageBox.Ok)
+            result = msg.exec_()
+        self.Choice_Oil_Type_lb.setText('') # 선택 유종 초기화
 
     def Cancel_button_clicked(self):  # 취소 버튼 이벤트
         self.Ex_fr.setVisible(False)
@@ -365,6 +397,15 @@ class Ui_Dialog(QWidget, object):
         self.Intro_fr.setVisible(True)
 
     def Confirm_button_clicked(self):  # 확인 버튼 이벤트
+        oiltype = ''
+        if self.Oil_type_lb.text() == '휘발유(가솔린)':
+            oiltype = 'G'
+        elif self.Oil_type_lb.text() == '경유(디젤)':
+            oiltype = 'D'
+        refuel_sql = 'INSERT INTO Register VALUES (' + '0' + ', ' + "%04d%02d%02d%02d%02d%02d" % (now.year, now.month, now.day, now.hour, now.minute,now.second) + ", ""'" + self.Num_Plate_lb.text() + "', ""'" + oiltype + "'"", '" + 'path' + "'"')' # path는 이미지 경로 추가 요함
+        curs = conn.cursor()
+        curs.execute(refuel_sql)
+        conn.commit()
         self.Ex_fr.setVisible(False)
         self.Main_fr.setVisible(False)
         self.Rema_fr.setVisible(False)
@@ -373,10 +414,10 @@ class Ui_Dialog(QWidget, object):
         self.End_fr.setVisible(False)
         self.Intro_fr.setVisible(True)
 
-    def Gasoline_btn_clicked(self):
+    def Gasoline_btn_clicked(self): # 유종 선택 버튼(휘발유)
         self.Choice_Oil_Type_lb.setText('유종 : 휘발유(가솔린)')
 
-    def Diesel_btn_clicked(self):
+    def Diesel_btn_clicked(self): # 유종 선택 버튼(경유)
         self.Choice_Oil_Type_lb.setText('유종 : 경유(디젤)')
 
 class Thread(QThread):
@@ -530,6 +571,6 @@ if __name__ == "__main__":
     Dialog.show()
 
     # capture = cv2.VideoCapture(0)
-    capture = cv2.VideoCapture("qwer.mp4")  # 165145 162900
+    capture = cv2.VideoCapture("asdf.mp4")  # 165145 162900
 
     sys.exit(app.exec_())
