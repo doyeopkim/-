@@ -144,8 +144,7 @@ class Ui_Dialog(QWidget, object):
         # 유종 정보 라벨
         self.Oil_type_lb = QtWidgets.QLabel(self.Ex_fr)
         self.Oil_type_lb.setGeometry(QtCore.QRect(97, 240, 264, 60))
-        self.Oil_type_lb.setStyleSheet(
-            'color : rgb(000, 000, 000); background-color: rgb(204,204,204); font-weight : bold; font-size: 30pt; font-family: 맑은 고딕;')
+        self.Oil_type_lb.setStyleSheet('color : rgb(000, 000, 000); background-color: rgb(); font-weight : bold; font-size: 30pt; font-family: 맑은 고딕;')
         self.Oil_type_lb.setAlignment(QtCore.Qt.AlignCenter)
         self.Oil_type_lb.setText('휘발유(가솔린)')
         # (입니다)Text 라벨
@@ -180,7 +179,7 @@ class Ui_Dialog(QWidget, object):
         self.CCancel_button.setStyleSheet('border-radius: 5px; background-color: rgb(051, 051, 051); color : rgb(255, 255, 255); font-size: 24pt; font-family: 맑은 고딕;')
         self.CCancel_button.setText('취 소')
         self.CCancel_button.clicked.connect(self.Cancel_button_clicked)  # 취소 버튼이벤트
-        #self.Ex_fr.setVisible(False)
+        self.Ex_fr.setVisible(False)
         # 유종 정보 등록 프레임 컽
 
         # 유종 정보 미등록 프레임
@@ -330,7 +329,8 @@ class Ui_Dialog(QWidget, object):
         self.Intro_fr.setVisible(False) # 인트로 프레임 Visible = False
         self.Main_fr.setVisible(True)   # 메인 프레임 Visible = True
         self.frame.setVisible(True)
-
+        global wtf
+        wtf = 1
         th1 = Thread(self)
         th1.changePixmap.connect(self.setImage)
         th2 = Thread2(self)
@@ -360,6 +360,8 @@ class Ui_Dialog(QWidget, object):
         k = cv2.waitKey(4000)  # 4초 대기
         self.End_fr.setVisible(False)
         self.Intro_fr.setVisible(True)
+        global wtf
+        wtf = 0
 
     def Regi_DB_clicked(self):  # 등록 버튼 이벤트(DB에 추가)
         oilType = ''    # 유종 변수
@@ -386,6 +388,8 @@ class Ui_Dialog(QWidget, object):
         self.Choice_Oil_Type_lb.setText('') # 선택 유종 초기화
 
     def Cancel_button_clicked(self):  # 취소 버튼 이벤트
+        global wtf
+        wtf = 0
         self.Ex_fr.setVisible(False)
         self.Regi_fr.setVisible(False)
         self.Register_fr.setVisible(False)
@@ -395,6 +399,8 @@ class Ui_Dialog(QWidget, object):
         self.Intro_fr.setVisible(True)
 
     def Confirm_button_clicked(self):  # 확인 버튼 이벤트
+        global wtf
+        wtf = 0
         oiltype = ''
         if self.Oil_type_lb.text() == '휘발유(가솔린)':
             oiltype = 'G'
@@ -424,7 +430,7 @@ class Thread(QThread):
     def run(self):
         prevtime = 0
 
-        while True:
+        while wtf:
             k = cv2.waitKey(30) # 영상 프레임 속도 조절
             ret, frame = capture.read()
             global re, fr
@@ -492,7 +498,7 @@ class Thread2(QThread):
 
         print("road Video time : %0.5f" % (time.time() - time1))
 
-        while True:
+        while wtf:
             global re, fr
             ret = re
             frame = fr
@@ -515,7 +521,6 @@ class Thread2(QThread):
 
             try:
                 curs = conn.cursor()
-
                 sql = 'SELECT oilType from Register Where carNum = ' + "'" + str(car_info[0]) + "'"  # 실행 할 쿼리문 입력
                 print(sql)
                 curs.execute(sql)  # 쿼리문 실행
@@ -540,10 +545,11 @@ class Thread2(QThread):
                     ui.Ex_fr.setVisible(False)
                     ui.Rema_fr.setVisible(True)
                     ui.Regi_fr.setVisible(True)
+                    if wtf == 0:
+                        ui.Rema_fr.setVisible(False)
+                        ui.Regi_fr.setVisible(False)
             except:
                 pass
-            finally:
-                conn.close()
             sleep(0)
 
     def Set_Img_Numlb(self): # 번호판 이미지와 인식 문자열 라벨에 올리는 함수
